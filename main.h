@@ -9,6 +9,9 @@
 #include <sys/wait.h>
 #include <sys/stat.h>
 
+/* Testing */
+#include <stdio.h>
+
 /* Helper functions */
 int _putchar(char c);
 char *_strdup(char *str);
@@ -16,8 +19,9 @@ int _strlen(char *s);
 char *_strcpy(char *dest, char *src);
 
 /* Shell functions */
-int execute(char *cmd);
-char *get_cmd_path(char *command);
+int execute(char **argv);
+char *get_cmd_path(char *cmd);
 char *prompt(void);
+char **split_string(char *buff);
 
 #endif /* simple_shell */
