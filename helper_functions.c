@@ -5,6 +5,7 @@
  * @s: char input
  * Return: length of the input string
  */
+
 int _strlen(char *s)
 {
 	int c;
@@ -14,12 +15,14 @@ int _strlen(char *s)
 	}
 	return (c);
 }
+
 /**
  * char *_strcpy - a function that copies the string pointed to by src
  * @dest: copy to
  * @src: copy from
  * Return: string
  */
+
 char *_strcpy(char *dest, char *src)
 {
 	char *ok = dest;
@@ -34,11 +37,13 @@ char *_strcpy(char *dest, char *src)
 	*dest = '\0';
 	return (ok);
 }
+
 /**
  * _strdup - duplicate to new memory space location
  * @str: char
  * Return: 0
  */
+
 char *_strdup(char *str)
 {
 	int i, end;
@@ -60,4 +65,18 @@ char *_strdup(char *str)
 		array[i] = str[i];
 
 	return (array);
+}
+
+#include <unistd.h>
+
+/**
+ * _putchar - writes the character c to stdout
+ * @c: The character to print
+ * Return: On success 1.
+ * On error, -1 is returned, and errno is set.
+ */
+
+int _putchar(char c)
+{
+	return (write(1, &c, 1));
 }
