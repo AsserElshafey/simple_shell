@@ -17,6 +17,7 @@ int _putchar(char c);
 char *_strdup(char *str);
 int _strlen(char *s);
 char *_strcpy(char *dest, char *src);
+char *_strcat(char *dest, char *src);
 
 /* Shell functions */
 int execute(char **argv);
