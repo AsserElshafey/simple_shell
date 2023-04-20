@@ -28,7 +28,5 @@ int execute(char **argv);
 char *get_cmd_path(char *cmd);
 char *prompt(void);
 char **split_string(char *buff);
-int execute(char **argv);
-char *get_cmd_path(char *cmd);
 
 #endif /* simple_shell */
