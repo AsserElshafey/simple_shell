@@ -12,6 +12,10 @@
 /* Testing */
 #include <stdio.h>
 
+/* extern */
+extern char **environ;
+char *_getenv(const char *name);
+
 /* Helper functions */
 int _putchar(char c);
 char *_strdup(char *str);
