@@ -158,11 +158,11 @@ char *_strncpy(char *dest, char *src, int n)
 
 int _strncmp(char* s1, char *s2, int n)
 {
-	char arr1[n + 1], arr2[n + 1];
-
+	char *arr1 = malloc(sizeof(char) * (n + 1));
+	char *arr2 = malloc(sizeof(char) * (n + 1));
 	_strncpy(arr1, s1, n);
 	_strncpy(arr2, s2, n);
-	arr1[n] = '\0';
-	arr2[n] = '\0';
+	_strcat(arr1, "\0");
+	_strcat(arr2, "\0");
 	return (_strcmp(arr1, arr2));
 }
