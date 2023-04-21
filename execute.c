@@ -7,18 +7,17 @@
  */
 int execute(char **argv)
 {
-	char *actual_cmd = NULL;
-
-	actual_cmd = get_cmd_path(argv[0]);
+	char *cmd = NULL;
 	pid_t pid;
 
+	cmd = get_cmd_path(argv[0]);
 	pid = fork();
 	switch (pid)
 	{
 	case (-1):
 		return (-1);
 	case (0):
-		if (execve(actual_cmd, argv, NULL) == -1)
+		if (execve(cmd, argv, NULL) == -1)
 		{
 			perror("Error");
 		}
