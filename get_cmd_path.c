@@ -5,6 +5,7 @@
  * @cmd: the command to look for
  * Return: the full path of the command, or NULL if not found
  */
+
 char *get_cmd_path(char *cmd)
 {
 	char *path, *token, *path_cpy, *path_array;
