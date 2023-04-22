@@ -35,7 +35,7 @@ int execute(char **argv)
 	unsigned int i = 0;
 
 	cmd = get_cmd_path(argv[0]);
-	if (strcmp(argv[0], "env") == 0)
+	if (_strcmp(argv[0], "env") == 0)
 	{
 		char **env = environ;
 
@@ -77,6 +77,8 @@ char *get_cmd_path(char *cmd)
 	struct stat buffer;
 
 	path = _getenv("PATH");
+	if (_strcmp(cmd, "exit") == 0)
+		exit(0);
 	if (path)
 	{
 		path_cpy = _strdup(path);
