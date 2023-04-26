@@ -18,6 +18,7 @@ int main(int ac, char **av)
                 av = split_string(buff);
                 execute(av);
                 free(buff);
+		return (0);
 	}
 	
 	(void)ac;
@@ -25,6 +26,7 @@ int main(int ac, char **av)
 	{
 		if (isatty(0) == 1)
 		{
+			write(1, "$ ", 2);
 			buff = prompt();
 
 			av = split_string(buff);
