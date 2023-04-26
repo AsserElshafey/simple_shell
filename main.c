@@ -3,6 +3,8 @@
 /**
  * main - entry point
  * Return: 0 for success
+ * @ac: number of args
+ * @av: array of args
  */
 
 int main(int ac, char **av)
