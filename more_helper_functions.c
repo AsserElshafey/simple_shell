@@ -66,3 +66,23 @@ int _strncmp(char *s1, char *s2, int n)
 	_strcat(arr2, "\0");
 	return (_strcmp(arr1, arr2));
 }
+
+/**
+ * arraycleaner - Clears a double pointer
+ * @str: Double pointer to clean
+ *
+ * Return: 1
+ */
+
+int frarr(char **str)
+{
+	int i;
+
+	for (i = 0; str[i]; i++)
+	{
+		free(str[i]);
+	}
+	free(str);
+
+	return (1);
+}

@@ -11,7 +11,7 @@
 
 /* Testing */
 #include <stdio.h>
-#include <errno.h>
+
 /* extern */
 extern char **environ;
 char *_getenv(char *name);
@@ -25,6 +25,7 @@ char *_strcat(char *dest, char *src);
 char *_strncpy(char *dest, char *src, int n);
 int _strcmp(char *s1, char *s2);
 int _strncmp(char *s1, char *s2, int n);
+int frarr(char **str);
 
 /* Shell functions */
 int execute(char **argv);

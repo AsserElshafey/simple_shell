@@ -28,7 +28,7 @@ char *_getenv(char *name)
  * Return: 0 on success, -1 on failure
  */
 
-int execute(char **argv)
+/*int execute(char **argv)
 {
 	char *cmd = NULL;
 	pid_t pid;
@@ -57,7 +57,6 @@ int execute(char **argv)
 	case (0):
 		if (execve(cmd, argv, NULL) == -1)
 		{
-			/*write(2, cmd, _strlen(cmd));*/
 			free(cmd);
 			perror(cmd);
 			exit(EXIT_FAILURE);
@@ -73,6 +72,60 @@ int execute(char **argv)
 		break;
 	}
 	return (0);
+}*/
+
+/**
+ * execute - executes a command with arguments
+ * @argv: the array of arguments
+ * Return: 0 on success, -1 on failure
+ */
+int execute(char **argv)
+{
+	char *cmd = NULL;
+	pid_t pid;
+	unsigned int i = 0;
+
+	if (argv == NULL)
+		return (-1);
+	cmd = get_cmd_path(argv[0]);
+	if (_strcmp(argv[0], "env") == 0)
+	{
+		char **env = environ;
+
+		while (env[i])
+		{
+			write(STDOUT_FILENO, env[i], _strlen(env[i]));
+			_putchar('\n');
+			i++;
+		}
+		free(cmd);
+		return (0);
+	}
+	pid = fork();
+	switch (pid)
+	{
+	case (-1):
+		free(cmd);
+		return (-1);
+	case (0):
+		if (cmd == NULL || execve(cmd, argv, NULL) == -1)
+		{
+			free(cmd);
+			perror(argv[0]);
+			exit(EXIT_FAILURE);
+		}
+		exit(EXIT_SUCCESS);
+	default:
+		if (wait(NULL) == -1)
+		{
+			free(cmd);
+			perror("wait");
+			return (-1);
+		}
+		break;
+	}
+	free(cmd);
+	return (0);
 }
 
 /**
@@ -81,15 +134,15 @@ int execute(char **argv)
  * Return: the full path of the command, or NULL if not found
  */
 
-char *get_cmd_path(char *cmd)
+/*char *get_cmd_path(char *cmd)
 {
-	char *path, *token, *path_cpy, *path_array;
+	char *path = NULL, *token = NULL, *path_cpy = NULL, *path_array = NULL;
 	int cmd_len, dir_len;
 	struct stat buffer;
 
-	path = _getenv("PATH");
 	if (_strcmp(cmd, "exit") == 0)
 		exit(0);
+	path = _getenv("PATH");
 	if (path)
 	{
 		path_cpy = _strdup(path);
@@ -120,6 +173,52 @@ char *get_cmd_path(char *cmd)
 		return (NULL);
 	}
 	return (NULL);
+}*/
+/**
+ * get_cmd_path - returns the full path of a command
+ * @cmd: the command name
+ * Return: the full path of the executable file for the command, or NULL if not found
+ */
+char *get_cmd_path(char *cmd)
+{
+	char *path = NULL, *token = NULL, *path_cpy = NULL, *path_array = NULL;
+	int cmd_len, dir_len;
+	struct stat buffer;
+
+	if (_strcmp(cmd, "exit") == 0)
+		exit(0);
+	path = _getenv("PATH");
+	if (path == NULL)
+		return (NULL);
+	path_cpy = _strdup(path);
+	if (path_cpy == NULL)
+		return (NULL);
+	cmd_len = _strlen(cmd);
+	token = strtok(path_cpy, ":");
+	while (token != NULL)
+	{
+		dir_len = _strlen(token);
+		path_array = malloc(dir_len + cmd_len + 2);
+		if (path_array == NULL)
+		{
+			free(path_cpy);
+			return (NULL);
+		}
+		_strcpy(path_array, token);
+		_strcat(path_array, "/");
+		_strcat(path_array, cmd);
+		if (!stat(path_array, &buffer))
+		{
+			free(path_cpy);
+			return (path_array);
+		}
+		free(path_array);
+		token = strtok(NULL, ":");
+	}
+	free(path_cpy);
+	if (!stat(cmd, &buffer))
+		return (cmd);
+	return (NULL);
 }
 
 /**
@@ -129,7 +228,7 @@ char *get_cmd_path(char *cmd)
 
 char *prompt(void)
 {
-	char *buf;
+	char *buf = NULL;
 	size_t n = 0;
 
 	if (getline(&buf, &n, stdin) != -1)
@@ -147,7 +246,7 @@ char *prompt(void)
 char **split_string(char *buff)
 {
 	char *buf_cpy = _strdup(buff);
-	char *token;
+	char *token = NULL;
 	char *delim = " \n";
 	char **av;
 	unsigned int num_tokens = 0, i = 0;
@@ -172,8 +271,7 @@ char **split_string(char *buff)
 	token = strtok(buf_cpy, delim);
 	for (i = 0; token != NULL; i++)
 	{
-		av[i] = malloc(sizeof(char) * _strlen(token));
-		_strcpy(av[i], token);
+		av[i] = _strdup(token);
 		token = strtok(NULL, delim);
 	}
 	free(buf_cpy);
