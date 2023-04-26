@@ -26,6 +26,7 @@ char *_strncpy(char *dest, char *src, int n);
 int _strcmp(char *s1, char *s2);
 int _strncmp(char *s1, char *s2, int n);
 int write_string(char *str);
+void sigint_handler(int signum);
 
 /* Shell functions */
 int execute(char **argv);

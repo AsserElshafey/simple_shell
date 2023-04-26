@@ -11,6 +11,11 @@ int main(int ac, char **av)
 {
 	char *buff = NULL;
 
+	if (signal(SIGINT, my_handler) == SIG_ERR)
+	{
+		write(STDERR_FILENO, "Error: failed to register signal handler.\n", 42);
+		return (1);
+	}
 	if (isatty(0) == 0)
 	{
 		buff = prompt();

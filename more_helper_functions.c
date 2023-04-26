@@ -86,3 +86,12 @@ int frarr(char **str)
 
 	return (1);
 }
+
+/**
+ * my_handler - handles SIGINT signal
+ * @sig: the signal number
+ */
+void my_handler()
+{
+	_putchar('\n');
+}
