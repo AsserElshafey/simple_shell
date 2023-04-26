@@ -13,9 +13,9 @@ char *_getenv(char *name)
 
 	while (env[i])
 	{
-		if (_strncmp(name, env[i], strlen(name)) == 0)
+		if (_strncmp(name, env[i], _strlen(name)) == 0)
 		{
-			return (&env[i][strlen(name) + 1]);
+			return (&env[i][_strlen(name) + 1]);
 		}
 		i++;
 	}
@@ -121,7 +121,7 @@ char *prompt(void)
 	char *buf;
 	size_t n = 0;
 
-	printf("$ ");
+	_putchar("$ ");
 	if (getline(&buf, &n, stdin) != -1)
 		return (buf);
 	exit(-1);
@@ -134,7 +134,7 @@ char *prompt(void)
  */
 char **split_string(char *buff)
 {
-	char *buf_cpy = strdup(buff);
+	char *buf_cpy = _strdup(buff);
 	char *token;
 	char *delim = " \n";
 	char **av;
@@ -160,7 +160,7 @@ char **split_string(char *buff)
 	token = strtok(buf_cpy, delim);
 	for (i = 0; token != NULL; i++)
 	{
-		av[i] = malloc(sizeof(char) * strlen(token));
+		av[i] = malloc(sizeof(char) * _strlen(token));
 		_strcpy(av[i], token);
 		token = strtok(NULL, delim);
 	}
