@@ -11,7 +11,7 @@
 
 /* Testing */
 #include <stdio.h>
-
+#include <errno.h>
 /* extern */
 extern char **environ;
 char *_getenv(char *name);

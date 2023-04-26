@@ -55,11 +55,17 @@ int execute(char **argv)
 	case (0):
 		if (execve(cmd, argv, NULL) == -1)
 		{
-			perror("Error");
+			/*write(2, cmd, _strlen(cmd));*/
+			perror(cmd);
+			exit(EXIT_FAILURE);
 		}
 		break;
 	default:
-		wait(NULL);
+		if (wait(NULL) == -1)
+		{
+			perror("wait");
+			return (-1);
+		}
 		break;
 	}
 	return (0);
