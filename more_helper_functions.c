@@ -57,6 +57,7 @@ char *_strncpy(char *dest, char *src, int n)
 
 int _strncmp(char *s1, char *s2, int n)
 {
+	/*
 	char *arr1 = malloc(sizeof(char) * (n + 1));
 	char *arr2 = malloc(sizeof(char) * (n + 1));
 
@@ -64,7 +65,22 @@ int _strncmp(char *s1, char *s2, int n)
 	_strncpy(arr2, s2, n);
 	_strcat(arr1, "\0");
 	_strcat(arr2, "\0");
-	return (_strcmp(arr1, arr2));
+	return (_strcmp(arr1, arr2));*/
+	while (n > 0 && *s1 && *s2)
+	{
+		if (*s1 != *s2)
+	{
+		return (int) (*s1 - *s2);
+	}
+		s1++;
+		s2++;
+		n--;
+	}
+	if (n == 0)
+	{
+		return 0;
+	}
+	return (int) (*s1 - *s2);
 }
 
 /**
