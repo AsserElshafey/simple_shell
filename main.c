@@ -8,6 +8,7 @@ void sigint_handler(int signum)
 	(void)signum;
 	/* print a newline character */
 	write(1, "\n", 1);
+	write(1, "$ ", 2);
 }
 /**
  * is_empty - checks for empty str
@@ -95,6 +96,8 @@ int main(int ac, char **av)
 
 			/* get a line from the standard input */
 			buff = prompt();
+			if (handler)
+				continue;
 			if (is_empty(buff))
 				continue;
 			if (buff == NULL)
