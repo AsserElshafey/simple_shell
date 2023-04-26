@@ -45,17 +45,20 @@ int execute(char **argv)
 			_putchar('\n');
 			i++;
 		}
+		free(cmd);
 		return (0);
 	}
 	pid = fork();
 	switch (pid)
 	{
 	case (-1):
+		free(cmd);
 		return (-1);
 	case (0):
 		if (execve(cmd, argv, NULL) == -1)
 		{
 			/*write(2, cmd, _strlen(cmd));*/
+			free(cmd);
 			perror(cmd);
 			exit(EXIT_FAILURE);
 		}
@@ -63,6 +66,7 @@ int execute(char **argv)
 	default:
 		if (wait(NULL) == -1)
 		{
+			free(cmd);
 			perror("wait");
 			return (-1);
 		}
