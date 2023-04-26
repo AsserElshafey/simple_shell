@@ -71,7 +71,19 @@ int execute(char **argv)
 
 	/* create a child process */
 	pid = fork();
+#if 0
 
+	if (pid != 0)
+		wait(NULL);
+
+	if (pid== 0 && execve(cmd, argv, NULL) == -1)
+	{
+		write(2, argv[0], _strlen(argv[0]));
+		perror(": ");
+		exit(EXIT_FAILURE);
+	}
+	return (0);
+#endif
 	switch (pid)
 	{
 	case (-1):
@@ -215,7 +227,8 @@ char **split_string(char *buff)
 	char *token = NULL;
 	char *delim = " \n";
 	char **av;
-	unsigned int num_tokens = 0, i = 0;
+	unsigned int num_tokens = 1, i = 0;
+	int j = 0;
 
 	/* check for invalid input */
 	if (buff == NULL || buff[0] == '\0')
@@ -242,25 +255,32 @@ char **split_string(char *buff)
 	if (av == NULL)
 	{
 		perror("Memory allocation failed");
-		free(buf_cpy);
-		exit(-1);
+		exit(1);
 	}
 
 	/* store each token in the array */
 	token = strtok(buf_cpy, delim);
-	for (i = 0; token != NULL; i++)
+	for (i = 0; token != NULL;)
 	{
 		av[i] = _strdup(token);
 		if (av[i] == NULL)
 		{
 			perror("Memory allocation failed");
-			free(buf_cpy);
+			for (; i != 0; i--)
+				free(av[i - 1]);
 			free(av);
-			exit(-1);
+			exit(1);
 		}
+		for (j = 0; j < _strlen(token); j++)
+		{
+			av[i][j] = token[j];
+		}
+		av[i][j] = '\0';
+		i++;
 		token = strtok(NULL, delim);
 	}
-	free(buf_cpy);
+	/* free(buf_cpy);*/
 	av[i] = NULL;
+	free(buf_cpy);
 	return (av);
 }
