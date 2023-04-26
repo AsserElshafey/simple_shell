@@ -41,7 +41,8 @@ int execute(char **argv)
 
 		while (env[i])
 		{
-			printf("%s\n", env[i]);
+			write(1, env[i], _strlen(env[i]));
+			_putchar('\n');
 			i++;
 		}
 		return (0);
@@ -125,6 +126,8 @@ char *prompt(void)
 	_putchar(' ');
 	if (getline(&buf, &n, stdin) != -1)
 		return (buf);
+	_putchar('\n');
+	free(buf);
 	exit(-1);
 }
 
