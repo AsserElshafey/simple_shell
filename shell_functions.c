@@ -121,7 +121,8 @@ char *prompt(void)
 	char *buf;
 	size_t n = 0;
 
-	_putchar("$ ");
+	_putchar('$');
+	_putchar(' ');
 	if (getline(&buf, &n, stdin) != -1)
 		return (buf);
 	exit(-1);
