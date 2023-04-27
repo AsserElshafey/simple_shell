@@ -52,7 +52,7 @@ int execute(char **argv, char **av, int length)
 		perror("fork");
 		return (-1);
 	case (0):
-		if (cmd == NULL || execve(cmd, argv, NULL) == -1)
+		if (cmd == NULL || execve(cmd, argv, environ) == -1)
 		{
 			perror("Error");
 			exit(0);
