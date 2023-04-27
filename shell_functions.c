@@ -143,7 +143,7 @@ char *prompt(void)
 			_putchar('\n');
 			exit(0);
 		}
-		exit(-1);
+		exit(0);
 	}
 
 	/* return the input string */
