@@ -50,7 +50,7 @@ bool is_whitespace(char c)
  * main - entry point
  * Return: 0 for success
  */
-
+#if 0
 int main(int ac, char **av)
 {
 	char *buff = NULL;
@@ -120,6 +120,28 @@ int main(int ac, char **av)
 			/* flush the output buffer */
 			fflush(stdout);
 		}
+	}
+	return (0);
+}
+#endif
+int main(int ac, char **av)
+{
+	char *buff, **args;
+	int status = 1, cnt = 0;
+       	/* number of characters the user types */
+
+	(void)ac;
+	while (status)
+	{
+		if (isatty(STDIN_FILENO))
+			write(1, "$ ", 2);
+		cnt++;
+		buff = prompt();
+		args = split_string(buff);
+		status = execute(args, av, cnt);
+
+		free(buff);
+		free(args);
 	}
 	return (0);
 }
