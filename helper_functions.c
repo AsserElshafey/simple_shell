@@ -46,25 +46,18 @@ char *_strcpy(char *dest, char *src)
 
 char *_strdup(char *str)
 {
-	int i, end;
-	char *array;
+	char *dup;
+	int i;
 
 	if (str == NULL)
 		return (NULL);
-
-	for (end = 0; str[end] != '\0'; end++)
-	{
-	}
-
-	array = malloc(end + 1);
-
-	if (array == NULL)
+	dup = malloc(sizeof(char) * (_strlen(str) + 1));
+	if (dup == NULL)
 		return (NULL);
-
-	for (i = 0; i < end; i++)
-		array[i] = str[i];
-
-	return (array);
+	for (i = 0; str[i] != '\0'; i++)
+		dup[i] = str[i];
+	dup[i] = '\0';
+	return (dup);
 }
 
 /**
