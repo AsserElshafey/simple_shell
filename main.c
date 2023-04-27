@@ -85,6 +85,12 @@ int main(int ac, char **av)
 		argv = split_string(buff);
 		if (argv == NULL)
 			return (-1);
+		if (_strcmp(argv[0], "exit") == 0)
+		{
+			free(buff);
+			free(argv);
+			return (0);
+		}
 		if (execute(argv, av, len) == -1)
 			return (-1);
 		free(buff);
@@ -93,4 +99,3 @@ int main(int ac, char **av)
 	}
 	return (0);
 }
-

@@ -54,6 +54,7 @@ int execute(char **argv, char **av, int length)
 	case (0):
 		if (cmd == NULL || execve(cmd, argv, NULL) == -1)
 		{
+			free(cmd);
 			perror("Error");
 			exit(0);
 		}
@@ -67,6 +68,7 @@ int execute(char **argv, char **av, int length)
 		}
 		break;
 	}
+	free(cmd);
 	return (1);
 }
 
@@ -84,8 +86,6 @@ char *get_cmd_path(char *cmd)
 
 	if (cmd == NULL || cmd[0] == '\0')
 		return (NULL);
-	if (_strcmp(cmd, "exit") == 0)
-		exit(0);
 	path = _getenv("PATH");
 	if (path == NULL)
 		return (NULL);
