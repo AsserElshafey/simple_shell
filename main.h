@@ -33,7 +33,7 @@ bool is_empty(char *str);
 bool is_whitespace(char c);
 
 /* Shell functions */
-int execute(char **argv);
+int execute(char **argv, char **av, int len);
 char *get_cmd_path(char *cmd);
 char *prompt(void);
 char **split_string(char *buff);

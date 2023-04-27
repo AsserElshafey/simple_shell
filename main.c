@@ -54,6 +54,8 @@ bool is_whitespace(char c)
 int main(int ac, char **av)
 {
 	char *buff = NULL;
+	char **argv;
+	int len = 0;
 	void (*handler)(int);
 
 	/* set up the signal handler for SIGINT */
@@ -74,12 +76,12 @@ int main(int ac, char **av)
 			return (-1);
 
 		/* split the line by spaces and newlines */
-		av = split_string(buff);
-		if (av == NULL)
+		argv = split_string(buff);
+		if (argv == NULL)
 			return (-1);
 
 		/* execute the command with arguments */
-		if (execute(av) == -1)
+		if (execute(argv, av, len) == -1)
 			return (-1);
 
 		free(buff);
@@ -102,18 +104,18 @@ int main(int ac, char **av)
 				continue;
 			if (buff == NULL)
 				return (-1);
-
+			len++;
 			/* split the line by spaces and newlines */
-			av = split_string(buff);
-			if (av == NULL)
+			argv = split_string(buff);
+			if (argv == NULL)
 				return (-1);
 
 			/* execute the command with arguments */
-			if (execute(av) == -1)
+			if (execute(argv, av, len) == -1)
 				return (-1);
 
 			free(buff);
-			free(av);
+			free(argv);
 
 			/* flush the output buffer */
 			fflush(stdout);

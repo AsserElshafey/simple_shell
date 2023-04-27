@@ -35,12 +35,13 @@ char *_getenv(char *name)
  * Return: 0 on success, -1 on failure
  */
 
-int execute(char **argv)
+int execute(char **argv, char **av, int length)
 {
-	char *cmd = NULL, *err_msg = NULL;
+	char *cmd = NULL;
 	pid_t pid;
 	unsigned int i = 0;
-
+	
+	(void)length;
 	/* check for invalid input */
 	if (argv == NULL || argv[0] == NULL)
 		return (-1);
@@ -49,6 +50,16 @@ int execute(char **argv)
 	cmd = get_cmd_path(argv[0]);
 
 	/* handle the special case of 'env' command */
+	if (cmd == NULL)
+	{
+		write(1, av[0], _strlen(argv[0]));
+		write(1, ": ", 2);
+		/*write(1, &length, );*/
+		write(1, ": ", 2);
+		write(1, argv[0], _strlen(argv[0]));
+		write(1, ": not found\n", 12 );
+		return (1);
+	}
 	if (_strcmp(argv[0], "env") == 0)
 	{
 		char **env = environ;
@@ -71,19 +82,7 @@ int execute(char **argv)
 
 	/* create a child process */
 	pid = fork();
-#if 0
 
-	if (pid != 0)
-		wait(NULL);
-
-	if (pid== 0 && execve(cmd, argv, NULL) == -1)
-	{
-		write(2, argv[0], _strlen(argv[0]));
-		perror(": ");
-		exit(EXIT_FAILURE);
-	}
-	return (0);
-#endif
 	switch (pid)
 	{
 	case (-1):
@@ -94,10 +93,7 @@ int execute(char **argv)
 		/* execute the command in the child process */
 		if (cmd == NULL || execve(cmd, argv, NULL) == -1)
 		{
-			free(cmd);
-			err_msg = _strcat(argv[0], ": not found");
-			perror(err_msg);
-			free(err_msg);
+			perror("Error");
 			exit(EXIT_FAILURE);
 		}
 		exit(EXIT_SUCCESS);
@@ -111,8 +107,7 @@ int execute(char **argv)
 		}
 		break;
 	}
-	free(cmd);
-	return (0);
+	return (1);
 }
 
 /**
