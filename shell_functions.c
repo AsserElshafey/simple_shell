@@ -37,9 +37,8 @@ int execute(char **argv, char **av, int length)
 {
 	char *cmd = NULL;
 	pid_t pid;
-	unsigned int i = 0;
 
-	(void)length;
+	(void)length, (void)av;
 	if (argv == NULL || argv[0] == NULL)
 		return (-1);
 	cmd = get_cmd_path(argv[0]);
@@ -138,11 +137,10 @@ char *prompt(void)
 	/* check for errors or end of file */
 	if (len == -1)
 	{
-		if (feof(stdin) == 1)
+		free(buf);
+		if (isatty(0))
 		{
-			free(buf);
-			if (isatty(0))
-				_putchar('\n');
+			_putchar('\n');
 			exit(0);
 		}
 		exit(-1);
