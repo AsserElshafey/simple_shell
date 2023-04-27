@@ -57,20 +57,11 @@ char *_strncpy(char *dest, char *src, int n)
 
 int _strncmp(char *s1, char *s2, int n)
 {
-	/*
-	char *arr1 = malloc(sizeof(char) * (n + 1));
-	char *arr2 = malloc(sizeof(char) * (n + 1));
-
-	_strncpy(arr1, s1, n);
-	_strncpy(arr2, s2, n);
-	_strcat(arr1, "\0");
-	_strcat(arr2, "\0");
-	return (_strcmp(arr1, arr2));*/
 	while (n > 0 && *s1 && *s2)
 	{
 		if (*s1 != *s2)
 	{
-		return (int) (*s1 - *s2);
+		return ((int) (*s1 - *s2));
 	}
 		s1++;
 		s2++;
@@ -78,13 +69,13 @@ int _strncmp(char *s1, char *s2, int n)
 	}
 	if (n == 0)
 	{
-		return 0;
+		return (0);
 	}
-	return (int) (*s1 - *s2);
+	return ((int) (*s1 - *s2));
 }
 
 /**
- * arraycleaner - Clears a double pointer
+ * frarr - Clears a double pointer
  * @str: Double pointer to clean
  *
  * Return: 1
@@ -104,10 +95,26 @@ int frarr(char **str)
 }
 
 /**
- * my_handler - handles SIGINT signal
- * @sig: the signal number
+ * print_env - prints the environment variables
+ * @cmd: pointer to command structure
+ * Return: 0 on success, -1 on failure
  */
-void my_handler()
+int print_env(char *cmd)
 {
-	_putchar('\n');
+	char **env = environ;
+	int i = 0;
+
+	while (env[i])
+	{
+		if (write(STDOUT_FILENO, env[i], _strlen(env[i])) == -1)
+		{
+			free(cmd);
+			perror("write");
+			return (-1);
+		}
+		_putchar('\n');
+		i++;
+	}
+	free(cmd);
+	return (0);
 }

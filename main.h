@@ -31,6 +31,7 @@ int frarr(char **str);
 void sigint_handler(int signum);
 bool is_empty(char *str);
 bool is_whitespace(char c);
+int print_env(char *cmd);
 
 /* Shell functions */
 int execute(char **argv, char **av, int len);
