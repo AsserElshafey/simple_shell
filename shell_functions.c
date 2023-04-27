@@ -55,9 +55,9 @@ int execute(char **argv, char **av, int length)
 		if (cmd == NULL || execve(cmd, argv, NULL) == -1)
 		{
 			perror("Error");
-			exit(EXIT_FAILURE);
+			exit(0);
 		}
-		exit(EXIT_SUCCESS);
+		exit(0);
 	default:
 		if (wait(NULL) == -1)
 		{
