@@ -13,6 +13,7 @@ void sigint_handler(int signum)
 /**
  * is_empty - checks for empty str
  * @str: the string
+ * Return: bool value
  */
 bool is_empty(char *str)
 {
@@ -34,6 +35,7 @@ bool is_empty(char *str)
 /**
  * is_whitespace - checks for white space
  * @c: the character
+ * Return: 1 or 0
  */
 bool is_whitespace(char c)
 {
@@ -41,16 +43,17 @@ bool is_whitespace(char c)
 	if (c == 32 || c == 9 || c == 10)
 		/* return true if it matches */
 		return (true);
-	else
 		/* return false otherwise */
-		return (false);
+	return (false);
 }
 
 /**
  * main - entry point
  * Return: 0 for success
+ * @ac: num of args
+ * @av: args
  */
-#if 0
+
 int main(int ac, char **av)
 {
 	char *buff = NULL;
@@ -58,45 +61,31 @@ int main(int ac, char **av)
 	int len = 0;
 	void (*handler)(int);
 
-	/* set up the signal handler for SIGINT */
 	handler = signal(SIGINT, sigint_handler);
-
-	/* check for errors */
 	if (handler == SIG_ERR)
 	{
 		perror("signal");
 		return (-1);
 	}
-	/* check if the input is from a terminal or a file */
 	if (isatty(0) == 0)
 	{
-		/* get a line from the standard input */
 		buff = prompt();
 		if (buff == NULL)
 			return (-1);
-
-		/* split the line by spaces and newlines */
 		argv = split_string(buff);
 		if (argv == NULL)
 			return (-1);
-
-		/* execute the command with arguments */
 		if (execute(argv, av, len) == -1)
 			return (-1);
-
 		free(buff);
 		return (0);
 	}
-	
 	(void)ac;
 	while (1)
 	{
 		if (isatty(0) == 1)
 		{
-			/* print a prompt */
 			write(1, "$ ", 2);
-
-			/* get a line from the standard input */
 			buff = prompt();
 			if (handler)
 				continue;
@@ -105,43 +94,16 @@ int main(int ac, char **av)
 			if (buff == NULL)
 				return (-1);
 			len++;
-			/* split the line by spaces and newlines */
 			argv = split_string(buff);
 			if (argv == NULL)
 				return (-1);
-
-			/* execute the command with arguments */
 			if (execute(argv, av, len) == -1)
 				return (-1);
-
 			free(buff);
 			free(argv);
-
-			/* flush the output buffer */
 			fflush(stdout);
 		}
 	}
 	return (0);
 }
-#endif
-int main(int ac, char **av)
-{
-	char *buff, **args;
-	int status = 1, cnt = 0;
-       	/* number of characters the user types */
 
-	(void)ac;
-	while (status)
-	{
-		if (isatty(STDIN_FILENO))
-			write(1, "$ ", 2);
-		cnt++;
-		buff = prompt();
-		args = split_string(buff);
-		status = execute(args, av, cnt);
-
-		free(buff);
-		free(args);
-	}
-	return (0);
-}
