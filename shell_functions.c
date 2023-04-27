@@ -207,8 +207,13 @@ char *prompt(void)
 	/* check for errors or end of file */
 	if (len == -1)
 	{
-		_putchar('\n');
-		free(buf);
+		if (feof(stdin) == 1)
+		{
+			free(buf);
+			if (isatty(1))
+				_putchar('\n');
+			exit(0);
+		}
 		exit(-1);
 	}
 
@@ -227,8 +232,7 @@ char **split_string(char *buff)
 	char *token = NULL;
 	char *delim = " \n";
 	char **av;
-	unsigned int num_tokens = 1, i = 0;
-	int j = 0;
+	unsigned int num_tokens = 0, i = 0;
 
 	/* check for invalid input */
 	if (buff == NULL || buff[0] == '\0')
@@ -237,10 +241,13 @@ char **split_string(char *buff)
 	/* make a copy of the input string */
 	buf_cpy = _strdup(buff);
 	if (buf_cpy == NULL)
-		return (NULL);
+	{
+		perror("alloc failed");
+		exit(EXIT_FAILURE);
+	}
 
 	/* split the input string by the delimiter */
-	token = strtok(buff, delim);
+	token = strtok(buf_cpy, delim);
 
 	/* count the number of tokens */
 	while (token != NULL)
@@ -251,17 +258,20 @@ char **split_string(char *buff)
 	num_tokens++;
 
 	/* allocate memory for the array of tokens */
-	av = malloc(sizeof(char *) * num_tokens);
+	av = malloc(sizeof(char *) * (num_tokens));
 	if (av == NULL)
 	{
+		free(buf_cpy);
 		perror("Memory allocation failed");
 		exit(1);
 	}
-
 	/* store each token in the array */
-	token = strtok(buf_cpy, delim);
-	for (i = 0; token != NULL;)
+	token = strtok(buff, delim);
+	for (i = 0; i  < (num_tokens - 1); i++)
 	{
+		av[i] = token;
+		token = strtok(NULL, delim);
+#if 0
 		av[i] = _strdup(token);
 		if (av[i] == NULL)
 		{
@@ -278,6 +288,7 @@ char **split_string(char *buff)
 		av[i][j] = '\0';
 		i++;
 		token = strtok(NULL, delim);
+#endif
 	}
 	/* free(buf_cpy);*/
 	av[i] = NULL;

@@ -113,11 +113,11 @@ int main(int ac, char **av)
 				return (-1);
 
 			free(buff);
+			free(av);
 
 			/* flush the output buffer */
 			fflush(stdout);
 		}
 	}
-	free(buff);
 	return (0);
 }
