@@ -67,42 +67,29 @@ int main(int ac, char **av)
 		perror("signal");
 		return (-1);
 	}
-	if (isatty(0) == 0)
-	{
-		buff = prompt();
-		if (buff == NULL)
-			return (-1);
-		argv = split_string(buff);
-		if (argv == NULL)
-			return (-1);
-		if (execute(argv, av, len) == -1)
-			return (-1);
-		free(buff);
-		return (0);
-	}
 	(void)ac;
 	while (1)
 	{
 		if (isatty(0) == 1)
 		{
 			write(1, "$ ", 2);
-			buff = prompt();
-			if (handler)
-				continue;
-			if (is_empty(buff))
-				continue;
-			if (buff == NULL)
-				return (-1);
-			len++;
-			argv = split_string(buff);
-			if (argv == NULL)
-				return (-1);
-			if (execute(argv, av, len) == -1)
-				return (-1);
-			free(buff);
-			free(argv);
-			fflush(stdout);
 		}
+		buff = prompt();
+		if (handler)
+			continue;
+		if (is_empty(buff))
+			continue;
+		if (buff == NULL)
+			return (-1);
+		len++;
+		argv = split_string(buff);
+		if (argv == NULL)
+			return (-1);
+		if (execute(argv, av, len) == -1)
+			return (-1);
+		free(buff);
+		free(argv);
+		fflush(stdout);
 	}
 	return (0);
 }

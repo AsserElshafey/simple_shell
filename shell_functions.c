@@ -10,11 +10,8 @@ char *_getenv(char *name)
 	unsigned int i = 0;
 	char **env = environ;
 
-	/* check for invalid input */
 	if (name == NULL || name[0] == '\0' || env == NULL)
 		return (NULL);
-
-	/* loop through the environment array */
 	while (env[i])
 	{
 		/* compare the name with the current variable */
@@ -28,11 +25,12 @@ char *_getenv(char *name)
 	/* return NULL if not found */
 	return (NULL);
 }
-
 /**
  * execute - executes a command using fork and execve
  * @argv: array of arguments for the command
  * Return: 0 on success, -1 on failure
+ * @av: av
+ * @length: len from loop
  */
 
 int execute(char **argv, char **av, int length)
@@ -40,49 +38,14 @@ int execute(char **argv, char **av, int length)
 	char *cmd = NULL;
 	pid_t pid;
 	unsigned int i = 0;
-	
+
 	(void)length;
-	/* check for invalid input */
 	if (argv == NULL || argv[0] == NULL)
 		return (-1);
-
-	/* get the full path of the command */
 	cmd = get_cmd_path(argv[0]);
-
-	/* handle the special case of 'env' command */
-	if (cmd == NULL)
-	{
-		write(1, av[0], _strlen(argv[0]));
-		write(1, ": ", 2);
-		/*write(1, &length, );*/
-		write(1, ": ", 2);
-		write(1, argv[0], _strlen(argv[0]));
-		write(1, ": not found\n", 12 );
-		return (1);
-	}
 	if (_strcmp(argv[0], "env") == 0)
-	{
-		char **env = environ;
-
-		/* print each environment variable */
-		while (env[i])
-		{
-			if (write(STDOUT_FILENO, env[i], _strlen(env[i])) == -1)
-			{
-				free(cmd);
-				perror("write");
-				return (-1);
-			}
-			_putchar('\n');
-			i++;
-		}
-		free(cmd);
-		return (0);
-	}
-
-	/* create a child process */
+		print_env(cmd);
 	pid = fork();
-
 	switch (pid)
 	{
 	case (-1):
@@ -90,7 +53,6 @@ int execute(char **argv, char **av, int length)
 		perror("fork");
 		return (-1);
 	case (0):
-		/* execute the command in the child process */
 		if (cmd == NULL || execve(cmd, argv, NULL) == -1)
 		{
 			perror("Error");
@@ -98,7 +60,6 @@ int execute(char **argv, char **av, int length)
 		}
 		exit(EXIT_SUCCESS);
 	default:
-		/* wait for the child process to finish */
 		if (wait(NULL) == -1)
 		{
 			free(cmd);
@@ -122,67 +83,42 @@ char *get_cmd_path(char *cmd)
 	int cmd_len, dir_len;
 	struct stat buffer;
 
-	/* check for invalid input */
 	if (cmd == NULL || cmd[0] == '\0')
 		return (NULL);
-
-	/* handle the special case of 'exit' command */
 	if (_strcmp(cmd, "exit") == 0)
 		exit(0);
-
-	/* get the value of the PATH environment variable */
 	path = _getenv("PATH");
 	if (path == NULL)
 		return (NULL);
-
-	/* make a copy of the path value */
 	path_cpy = _strdup(path);
 	if (path_cpy == NULL)
 		return (NULL);
-
-	/* get the length of the command name */
 	cmd_len = _strlen(cmd);
-
-	/* split the path value by ':' delimiter */
 	token = strtok(path_cpy, ":");
 	while (token != NULL)
 	{
-		/* get the length of the current directory */
 		dir_len = _strlen(token);
-
-		/* allocate memory for the full path of the command */
 		path_array = malloc(dir_len + cmd_len + 2);
 		if (path_array == NULL)
 		{
 			free(path_cpy);
 			return (NULL);
 		}
-
-		/* concatenate the directory, '/', and the command name */
 		_strcpy(path_array, token);
 		_strcat(path_array, "/");
 		_strcat(path_array, cmd);
-
-		/* check if the file exists and is executable */
 		if (!stat(path_array, &buffer))
 		{
 			free(path_cpy);
 			return (path_array);
 		}
-
 		free(path_array);
-		
-                /* get the next token */
-                token = strtok(NULL, ":");
-        }
-        free(path_cpy);
-
-        /* check if the command is a relative or absolute path */
-        if (!stat(cmd, &buffer))
-                return (cmd);
-
-        /* return NULL if not found */
-        return (NULL);
+		token = strtok(NULL, ":");
+	}
+	free(path_cpy);
+	if (!stat(cmd, &buffer))
+		return (cmd);
+	return (NULL);
 }
 
 /**
@@ -205,7 +141,7 @@ char *prompt(void)
 		if (feof(stdin) == 1)
 		{
 			free(buf);
-			if (isatty(1))
+			if (isatty(0))
 				_putchar('\n');
 			exit(0);
 		}
@@ -223,17 +159,13 @@ char *prompt(void)
  */
 char **split_string(char *buff)
 {
-	char *buf_cpy = NULL;
-	char *token = NULL;
+	char *buf_cpy = NULL, *token = NULL;
 	char *delim = " \n";
 	char **av;
 	unsigned int num_tokens = 0, i = 0;
 
-	/* check for invalid input */
 	if (buff == NULL || buff[0] == '\0')
 		return (NULL);
-
-	/* make a copy of the input string */
 	buf_cpy = _strdup(buff);
 	if (buf_cpy == NULL)
 	{
@@ -241,18 +173,13 @@ char **split_string(char *buff)
 		exit(EXIT_FAILURE);
 	}
 
-	/* split the input string by the delimiter */
 	token = strtok(buf_cpy, delim);
-
-	/* count the number of tokens */
 	while (token != NULL)
 	{
 		num_tokens++;
 		token = strtok(NULL, delim);
 	}
 	num_tokens++;
-
-	/* allocate memory for the array of tokens */
 	av = malloc(sizeof(char *) * (num_tokens));
 	if (av == NULL)
 	{
@@ -260,32 +187,12 @@ char **split_string(char *buff)
 		perror("Memory allocation failed");
 		exit(1);
 	}
-	/* store each token in the array */
 	token = strtok(buff, delim);
 	for (i = 0; i  < (num_tokens - 1); i++)
 	{
 		av[i] = token;
 		token = strtok(NULL, delim);
-#if 0
-		av[i] = _strdup(token);
-		if (av[i] == NULL)
-		{
-			perror("Memory allocation failed");
-			for (; i != 0; i--)
-				free(av[i - 1]);
-			free(av);
-			exit(1);
-		}
-		for (j = 0; j < _strlen(token); j++)
-		{
-			av[i][j] = token[j];
-		}
-		av[i][j] = '\0';
-		i++;
-		token = strtok(NULL, delim);
-#endif
 	}
-	/* free(buf_cpy);*/
 	av[i] = NULL;
 	free(buf_cpy);
 	return (av);
