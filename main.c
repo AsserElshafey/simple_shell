@@ -71,9 +71,7 @@ int main(int ac, char **av)
 	while (1)
 	{
 		if (isatty(0) == 1)
-		{
 			write(1, "$ ", 2);
-		}
 		buff = prompt();
 		if (handler)
 			continue;
