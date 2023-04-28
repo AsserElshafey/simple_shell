@@ -72,6 +72,7 @@ int execute(char **argv, char **av, int length)
 		}
 		break;
 	}
+	free(cmd);
 	return (1);
 }
 
@@ -83,7 +84,7 @@ int execute(char **argv, char **av, int length)
 
 char *get_cmd_path(char *cmd)
 {
-	char *path = NULL, *token = NULL, *path_cpy = NULL, *path_array = NULL;
+	char *path, *token, *path_cpy, *path_array;
 	int cmd_len, dir_len;
 	struct stat buffer;
 
