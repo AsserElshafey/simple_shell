@@ -136,7 +136,7 @@ char *prompt(void)
 	ssize_t len;
 
 	/* get a line from the standard input */
-	len = getline(&buf, &n, stdin);
+	len = _getline(&buf, &n, stdin);
 
 	/* check for errors or end of file */
 	if (len == -1)

@@ -39,4 +39,8 @@ char *get_cmd_path(char *cmd);
 char *prompt(void);
 char **split_string(char *buff);
 
+/* Advanced */
+ssize_t _getline(char **lineptr, size_t *n, FILE *stream);
+char *_memcpy(char *dest, char *src, unsigned int n);
+void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
 #endif /* simple_shell */
