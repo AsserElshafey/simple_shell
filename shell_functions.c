@@ -53,7 +53,6 @@ int execute(char **argv, char **av, int length)
 	switch (pid)
 	{
 	case (-1):
-		free(cmd);
 		perror("fork");
 		return (-1);
 	case (0):
@@ -64,15 +63,17 @@ int execute(char **argv, char **av, int length)
 		free(cmd);
 		exit(0);
 	default:
-		if (wait(&status) == -1)
+		/*if (wait(&status) == -1)
 		{
-			free(cmd);
 			perror("wait");
-			return (-1);
+			return (2);
 		}
+		break;*/
+		wait(&status);
+		if(cmd != argv[0])
+			free(cmd);
 		break;
 	}
-	free(cmd);
 	return (1);
 }
 
