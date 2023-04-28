@@ -54,13 +54,12 @@ bool is_whitespace(char c)
  * @av: args
  */
 
-int main(int ac, char **av)
+int main(__attribute__((unused))int ac, char **av)
 {
 	char *buff = NULL;
 	char **argv;
-	int len = 0;
+	int len = 0, status = 0;
 	void (*handler)(int);
-	int status = 0;
 
 	handler = signal(SIGINT, sigint_handler);
 	if (handler == SIG_ERR)
@@ -68,7 +67,6 @@ int main(int ac, char **av)
 		perror("signal");
 		return (-1);
 	}
-	(void)ac;
 	while (1)
 	{
 		free(buff);

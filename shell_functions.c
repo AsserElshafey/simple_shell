@@ -69,10 +69,9 @@ int execute(char **argv, char **av, int length)
 			status = WEXITSTATUS(status);
 		else
 			status = 2;
-		if(cmd != argv[0])
+		if (cmd != argv[0])
 			free(cmd);
 		return (status);
-		break;
 	}
 	return (1);
 }

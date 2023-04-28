@@ -6,7 +6,7 @@
  * @status: status of last command
  * Return: nothing
  */
-void exit_shell(char **argv,int status)
+void exit_shell(char **argv, int status)
 {
 	/* check if the argument is a valid integer */
 	if (argv[1] != NULL && is_integer(argv[1]))

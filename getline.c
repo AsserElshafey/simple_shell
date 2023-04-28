@@ -67,26 +67,21 @@ void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size)
 
 /**
  * _getline - get line input from user
- * @lineptr: buffer where to send input
+ * @lptr: buffer where to send input
  * @n: size of buffer to modify
  * @stream: stream where to read
  * Return: number of chars read
  */
-#define BUFFER_SIZE 1024
-ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
+ssize_t _getline(char **lptr, size_t *n, __attribute__((unused))FILE * stream)
 {
 	static char buffer[BUFFER_SIZE];
-	static int start;
-	static int end;
+	static int start, end;
 	char *line;
 	int len = 0;
-
-	(void)stream;
 
 	line = malloc(BUFFER_SIZE);
 	if (line == NULL)
 		return (-1);
-
 	while (1)
 	{
 		if (start >= end) /* refill the buffer */
@@ -104,9 +99,8 @@ ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
 				return (-1);
 			}
 		}
-		line[len] = buffer[start];
+		line[len++] = buffer[start];
 		start++;
-		len++;
 		if (line[len - 1] == '\n') /* end of line */
 			break;
 		if (start == end) /* expand the line buffer */
@@ -117,7 +111,7 @@ ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
 		}
 	}
 	line[len] = '\0';
-	*lineptr = line;
+	*lptr = line;
 	*n = len;
 	return (len);
 }

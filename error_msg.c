@@ -2,9 +2,9 @@
 
 /**
  * print_error - prints an error message to the standard error
- * @prog_name: the name of the program
+ * @av: the name of the program
  * @len: the number of commands entered
- * @cmd: the command that caused the error
+ * @argv: the command that caused the error
  *
  * Return: nothing
  */

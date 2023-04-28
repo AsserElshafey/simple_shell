@@ -13,6 +13,7 @@
 
 /* Testing */
 #include <stdio.h>
+#define BUFFER_SIZE 1024
 
 /* extern */
 extern char **environ;
