@@ -33,6 +33,10 @@ bool is_empty(char *str);
 bool is_whitespace(char c);
 int print_env(char *cmd);
 
+/* error_msg */
+void print_error(char **argv, int len, char **av);
+char *_itoa(int n);
+
 /* Shell functions */
 int execute(char **argv, char **av, int len);
 char *get_cmd_path(char *cmd);

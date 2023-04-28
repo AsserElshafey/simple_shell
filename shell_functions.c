@@ -39,12 +39,12 @@ int execute(char **argv, char **av, int length)
 	pid_t pid;
 	int status;
 
-	(void)length, (void)av;
 	if (argv == NULL || argv[0] == NULL)
 		return (-1);
 	cmd = get_cmd_path(argv[0]);
 	if (cmd == NULL)
 	{
+		print_error(argv, length, av);
 		return (127);
 	}
 	if (_strcmp(argv[0], "env") == 0)
