@@ -86,8 +86,7 @@ int main(int ac, char **av)
 			return (-1);
 		if (_strcmp(argv[0], "exit") == 0)
 		{
-			free(buff);
-			free(argv);
+			exit_shell(argv);
 			return (0);
 		}
 		if (execute(argv, av, len) == -1)

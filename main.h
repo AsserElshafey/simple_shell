@@ -48,7 +48,9 @@ char *_strchr(char *s, char c);
 char _getdelim(char *str, const char *delim);
 char *_strtok_r(char *str, const char *delim);
 char *_strtok(char *str, const char *delim);
-
+void exit_shell(char **argv);
+int _atoi(char *s);
+int is_integer(char *s);
 
 
 #endif /* simple_shell */
