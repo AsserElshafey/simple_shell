@@ -70,6 +70,7 @@ int main(int ac, char **av)
 	(void)ac;
 	while (1)
 	{
+		free(buff);
 		if (isatty(0) == 1)
 			write(1, "$ ", 2);
 		buff = prompt();
@@ -91,7 +92,7 @@ int main(int ac, char **av)
 		}
 		if (execute(argv, av, len) == -1)
 			return (-1);
-		free(buff);
+		/*free(buff);*/
 		free(argv);
 		fflush(stdout);
 	}

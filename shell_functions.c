@@ -37,11 +37,16 @@ int execute(char **argv, char **av, int length)
 {
 	char *cmd = NULL;
 	pid_t pid;
+	int status;
 
 	(void)length, (void)av;
 	if (argv == NULL || argv[0] == NULL)
 		return (-1);
 	cmd = get_cmd_path(argv[0]);
+	if (cmd == NULL)
+	{
+		return (1);
+	}
 	if (_strcmp(argv[0], "env") == 0)
 		print_env(cmd);
 	pid = fork();
@@ -52,14 +57,14 @@ int execute(char **argv, char **av, int length)
 		perror("fork");
 		return (-1);
 	case (0):
-		if (cmd == NULL || execve(cmd, argv, environ) == -1)
+		if (execve(cmd, argv, environ) == -1)
 		{
 			perror("Error");
-			exit(0);
 		}
+		free(cmd);
 		exit(0);
 	default:
-		if (wait(NULL) == -1)
+		if (wait(&status) == -1)
 		{
 			free(cmd);
 			perror("wait");
@@ -82,8 +87,8 @@ char *get_cmd_path(char *cmd)
 	int cmd_len, dir_len;
 	struct stat buffer;
 
-	if (cmd == NULL || cmd[0] == '\0')
-		return (NULL);
+	/*if (cmd == NULL || cmd[0] == '\0')
+		return (NULL);*/
 	path = _getenv("PATH");
 	if (path == NULL)
 		return (NULL);
@@ -96,14 +101,15 @@ char *get_cmd_path(char *cmd)
 	{
 		dir_len = _strlen(token);
 		path_array = malloc(dir_len + cmd_len + 2);
-		if (path_array == NULL)
+		/*if (path_array == NULL)
 		{
 			free(path_cpy);
 			return (NULL);
-		}
+		}*/
 		_strcpy(path_array, token);
 		_strcat(path_array, "/");
 		_strcat(path_array, cmd);
+		_strcat(path_array, "\0");
 		if (!stat(path_array, &buffer))
 		{
 			free(path_cpy);
