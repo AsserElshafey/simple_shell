@@ -45,7 +45,7 @@ int execute(char **argv, char **av, int length)
 	cmd = get_cmd_path(argv[0]);
 	if (cmd == NULL)
 	{
-		return (-1);
+		return (1);
 	}
 	if (_strcmp(argv[0], "env") == 0)
 		print_env(cmd);
@@ -72,7 +72,7 @@ int execute(char **argv, char **av, int length)
 		}
 		break;
 	}
-	return (0);
+	return (1);
 }
 
 /**
