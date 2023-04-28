@@ -32,7 +32,7 @@ int frarr(char **str);
 void sigint_handler(int signum);
 bool is_empty(char *str);
 bool is_whitespace(char c);
-int print_env(char *cmd);
+int print_env(char **argv);
 
 /* error_msg */
 void print_error(char **argv, int len, char **av);

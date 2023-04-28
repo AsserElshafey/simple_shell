@@ -99,22 +99,29 @@ int frarr(char **str)
  * @cmd: pointer to command structure
  * Return: 0 on success, -1 on failure
  */
-int print_env(char *cmd)
+int print_env(char **argv)
 {
 	char **env = environ;
-	int i = 0;
+	unsigned int i = 0;
 
-	while (env[i])
+	if (argv[1] == NULL)
 	{
-		if (write(STDOUT_FILENO, env[i], _strlen(env[i])) == -1)
+		while (env[i])
 		{
-			free(cmd);
-			perror("write");
-			return (-1);
+			write(1, env[i], _strlen(env[i]));
+			_putchar('\n');
+			i++;
 		}
-		_putchar('\n');
-		i++;
 	}
-	free(cmd);
-	return (0);
+	else
+	{
+		i = 1;
+		while (argv[i])
+		{
+			write(1, argv[i], _strlen(argv[i]));
+			_putchar('\n');
+			i++;
+		}
+	}
+	return (1);
 }

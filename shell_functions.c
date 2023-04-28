@@ -48,7 +48,7 @@ int execute(char **argv, char **av, int length)
 		return (127);
 	}
 	if (_strcmp(argv[0], "env") == 0)
-		print_env(cmd);
+		print_env(argv);
 	pid = fork();
 	switch (pid)
 	{
