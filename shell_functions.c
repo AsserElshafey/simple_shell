@@ -50,6 +50,7 @@ int execute(char **argv, char **av, int length)
 	if (_strcmp(argv[0], "env") == 0)
 	{
 		print_env(argv);
+		free(cmd);
 		return (0);
 	}
 	pid = fork();
@@ -60,13 +61,10 @@ int execute(char **argv, char **av, int length)
 		return (-1);
 	case (0):
 		if (execve(cmd, argv, environ) == -1)
-		{
 			perror("Error");
-		}
 		free(cmd);
 		exit(0);
 	default:
-
 		wait(&status);
 		if (WIFEXITED(status))
 			status = WEXITSTATUS(status);
