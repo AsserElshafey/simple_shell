@@ -96,7 +96,7 @@ int frarr(char **str)
 
 /**
  * print_env - prints the environment variables
- * @cmd: pointer to command structure
+ * @argv: passed argv
  * Return: 0 on success, -1 on failure
  */
 int print_env(char **argv)
