@@ -45,7 +45,7 @@ int execute(char **argv, char **av, int length)
 	cmd = get_cmd_path(argv[0]);
 	if (cmd == NULL)
 	{
-		return (1);
+		return (-1);
 	}
 	if (_strcmp(argv[0], "env") == 0)
 		print_env(cmd);
@@ -72,7 +72,7 @@ int execute(char **argv, char **av, int length)
 		}
 		break;
 	}
-	return (1);
+	return (0);
 }
 
 /**
@@ -87,8 +87,8 @@ char *get_cmd_path(char *cmd)
 	int cmd_len, dir_len;
 	struct stat buffer;
 
-	/*if (cmd == NULL || cmd[0] == '\0')
-		return (NULL);*/
+	if (cmd == NULL || cmd[0] == '\0')
+		return (NULL);
 	path = _getenv("PATH");
 	if (path == NULL)
 		return (NULL);
@@ -101,16 +101,16 @@ char *get_cmd_path(char *cmd)
 	{
 		dir_len = _strlen(token);
 		path_array = malloc(dir_len + cmd_len + 2);
-		/*if (path_array == NULL)
+		if (path_array == NULL)
 		{
 			free(path_cpy);
 			return (NULL);
-		}*/
+		}
 		_strcpy(path_array, token);
 		_strcat(path_array, "/");
 		_strcat(path_array, cmd);
 		_strcat(path_array, "\0");
-		if (!stat(path_array, &buffer))
+		if (stat(path_array, &buffer) == 0)
 		{
 			free(path_cpy);
 			return (path_array);
@@ -119,7 +119,7 @@ char *get_cmd_path(char *cmd)
 		token = strtok(NULL, ":");
 	}
 	free(path_cpy);
-	if (!stat(cmd, &buffer))
+	if (stat(cmd, &buffer) == 0)
 		return (cmd);
 	return (NULL);
 }

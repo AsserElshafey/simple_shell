@@ -92,7 +92,6 @@ int main(int ac, char **av)
 		}
 		if (execute(argv, av, len) == -1)
 			return (-1);
-		/*free(buff);*/
 		free(argv);
 		fflush(stdout);
 	}
