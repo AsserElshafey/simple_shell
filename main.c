@@ -60,6 +60,7 @@ int main(int ac, char **av)
 	char **argv;
 	int len = 0;
 	void (*handler)(int);
+	int status = 0;
 
 	handler = signal(SIGINT, sigint_handler);
 	if (handler == SIG_ERR)
@@ -87,10 +88,11 @@ int main(int ac, char **av)
 		if (_strcmp(argv[0], "exit") == 0)
 		{
 			free(buff);
-			exit_shell(argv);
-			return (0);
+			exit_shell(argv, status);
+			return (status);
 		}
-		if (execute(argv, av, len) == -1)
+		status = execute(argv, av, len);
+		if (status == -1)
 			return (-1);
 		free(argv);
 		fflush(stdout);

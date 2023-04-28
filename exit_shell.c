@@ -3,13 +3,11 @@
 /**
  * exit_shell - exits the shell with a given status
  * @argv: the arguments array
- *
+ * @status: status of last command
  * Return: nothing
  */
-void exit_shell(char **argv)
+void exit_shell(char **argv,int status)
 {
-	int status = 0;
-
 	/* check if the argument is a valid integer */
 	if (argv[1] != NULL && is_integer(argv[1]))
 	{

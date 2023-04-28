@@ -45,7 +45,7 @@ int execute(char **argv, char **av, int length)
 	cmd = get_cmd_path(argv[0]);
 	if (cmd == NULL)
 	{
-		return (1);
+		return (127);
 	}
 	if (_strcmp(argv[0], "env") == 0)
 		print_env(cmd);
@@ -63,15 +63,15 @@ int execute(char **argv, char **av, int length)
 		free(cmd);
 		exit(0);
 	default:
-		/*if (wait(&status) == -1)
-		{
-			perror("wait");
-			return (2);
-		}
-		break;*/
+
 		wait(&status);
+		if (WIFEXITED(status))
+			status = WEXITSTATUS(status);
+		else
+			status = 2;
 		if(cmd != argv[0])
 			free(cmd);
+		return (status);
 		break;
 	}
 	return (1);
