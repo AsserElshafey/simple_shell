@@ -43,4 +43,12 @@ char **split_string(char *buff);
 ssize_t _getline(char **lineptr, size_t *n, FILE *stream);
 char *_memcpy(char *dest, char *src, unsigned int n);
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
+char *_strtok(char *str, const char *delim);
+char *_strchr(char *s, char c);
+char _getdelim(char *str, const char *delim);
+char *_strtok_r(char *str, const char *delim);
+char *_strtok(char *str, const char *delim);
+
+
+
 #endif /* simple_shell */

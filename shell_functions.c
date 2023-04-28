@@ -175,11 +175,11 @@ char **split_string(char *buff)
 		exit(EXIT_FAILURE);
 	}
 
-	token = strtok(buf_cpy, delim);
+	token = _strtok(buf_cpy, delim);
 	while (token != NULL)
 	{
 		num_tokens++;
-		token = strtok(NULL, delim);
+		token = _strtok(NULL, delim);
 	}
 	num_tokens++;
 	av = malloc(sizeof(char *) * (num_tokens));
@@ -189,11 +189,11 @@ char **split_string(char *buff)
 		perror("Memory allocation failed");
 		exit(1);
 	}
-	token = strtok(buff, delim);
+	token = _strtok(buff, delim);
 	for (i = 0; i  < (num_tokens - 1); i++)
 	{
 		av[i] = token;
-		token = strtok(NULL, delim);
+		token = _strtok(NULL, delim);
 	}
 	av[i] = NULL;
 	free(buf_cpy);
